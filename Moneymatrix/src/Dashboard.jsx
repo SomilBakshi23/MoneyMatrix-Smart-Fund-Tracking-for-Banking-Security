@@ -18,9 +18,10 @@ import NetworkView from './NetworkView';
 import AlertsView from './AlertsView';
 import InspectView from './InspectView';
 import MonitorView from './MonitorView';
+import SettingsView from './SettingsView';
 
 export default function Dashboard({ onLogout }) {
-  const [activeTab, setActiveTab] = useState('monitor');
+  const [activeTab, setActiveTab] = useState('settings');
 
   return (
     <div className="h-screen w-full bg-[#0d0d0c] text-white font-sans flex overflow-hidden selection:bg-mm-yellow selection:text-black">
@@ -76,7 +77,10 @@ export default function Dashboard({ onLogout }) {
               <SearchIcon size={18} />
               INSPECT
             </button>
-            <button className="flex items-center gap-4 px-8 py-4 text-mm-textMuted hover:text-white transition-colors border-l-[3px] border-transparent text-xs font-mono tracking-wider w-full text-left">
+            <button 
+              onClick={() => setActiveTab('settings')}
+              className={`flex items-center gap-4 px-8 py-4 text-xs font-mono tracking-wider w-full text-left transition-colors ${activeTab === 'settings' ? 'text-mm-yellow bg-mm-yellow/5 border-l-[3px] border-mm-yellow shadow-[inset_20px_0_20px_-20px_rgba(255,197,0,0.2)]' : 'text-mm-textMuted hover:text-white border-l-[3px] border-transparent'}`}
+            >
               <Settings size={18} />
               SYSTEMS
             </button>
@@ -134,6 +138,7 @@ export default function Dashboard({ onLogout }) {
           {activeTab === 'network' && <NetworkView />}
           {activeTab === 'alerts' && <AlertsView />}
           {activeTab === 'inspect' && <InspectView />}
+          {activeTab === 'settings' && <SettingsView />}
         </div>
       </div>
     </div>
