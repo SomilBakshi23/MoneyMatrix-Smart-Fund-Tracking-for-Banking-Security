@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { 
   ShieldCheck, 
   Lock, 
@@ -8,8 +8,14 @@ import {
   ArrowRight,
   Database
 } from 'lucide-react';
+import Dashboard from './Dashboard';
 
-function App() {
+function LoginScreen({ onLogin }) {
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    onLogin();
+  };
+
   return (
     <div className="min-h-screen w-full bg-mm-bg text-white font-sans flex flex-col justify-between p-8 overflow-hidden selection:bg-mm-yellow selection:text-black">
       {/* Background pattern (optional subtle grid if needed) */}
@@ -69,7 +75,7 @@ function App() {
           </div>
 
           {/* Login Form */}
-          <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
+          <form className="space-y-6" onSubmit={handleSubmit}>
             
             {/* Employee ID */}
             <div>
@@ -182,6 +188,20 @@ function App() {
         </div>
       </div>
     </div>
+  );
+}
+
+function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  return (
+    <>
+      {isLoggedIn ? (
+        <Dashboard onLogout={() => setIsLoggedIn(false)} />
+      ) : (
+        <LoginScreen onLogin={() => setIsLoggedIn(true)} />
+      )}
+    </>
   );
 }
 
