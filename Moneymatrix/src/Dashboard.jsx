@@ -17,9 +17,10 @@ import {
 import NetworkView from './NetworkView';
 import AlertsView from './AlertsView';
 import InspectView from './InspectView';
+import MonitorView from './MonitorView';
 
 export default function Dashboard({ onLogout }) {
-  const [activeTab, setActiveTab] = useState('inspect');
+  const [activeTab, setActiveTab] = useState('monitor');
 
   return (
     <div className="h-screen w-full bg-[#0d0d0c] text-white font-sans flex overflow-hidden selection:bg-mm-yellow selection:text-black">
@@ -47,7 +48,10 @@ export default function Dashboard({ onLogout }) {
 
           {/* Navigation */}
           <nav className="flex flex-col">
-            <button className="flex items-center gap-4 px-8 py-4 text-mm-textMuted hover:text-white transition-colors border-l-[3px] border-transparent text-xs font-mono tracking-wider w-full text-left">
+            <button 
+              onClick={() => setActiveTab('monitor')}
+              className={`flex items-center gap-4 px-8 py-4 text-xs font-mono tracking-wider w-full text-left transition-colors ${activeTab === 'monitor' ? 'text-mm-yellow bg-mm-yellow/5 border-l-[3px] border-mm-yellow shadow-[inset_20px_0_20px_-20px_rgba(255,197,0,0.2)]' : 'text-mm-textMuted hover:text-white border-l-[3px] border-transparent'}`}
+            >
               <Target size={18} />
               MONITOR
             </button>
@@ -126,6 +130,7 @@ export default function Dashboard({ onLogout }) {
 
         {/* Dynamic Content Views */}
         <div className="flex-1 flex overflow-hidden relative">
+          {activeTab === 'monitor' && <MonitorView />}
           {activeTab === 'network' && <NetworkView />}
           {activeTab === 'alerts' && <AlertsView />}
           {activeTab === 'inspect' && <InspectView />}
