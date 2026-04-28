@@ -1,309 +1,226 @@
 import React from 'react';
-import { FileText, Download, MoreVertical, AlertTriangle, ArrowLeftRight, Info, ShieldAlert, Activity, ShieldCheck } from 'lucide-react';
+import { Download, FileText, ChevronDown, Activity, ShieldAlert, BarChart3, Fingerprint, RefreshCw } from 'lucide-react';
 
 export default function InspectView() {
   return (
-    <div className="flex-1 flex flex-col bg-[#161614] overflow-y-auto p-8 relative">
+    <div className="flex-1 flex flex-col bg-mm-card dark:bg-[#11110f] rounded-[28px] dark:rounded-none shadow-premium dark:shadow-none overflow-y-auto p-10 dark:p-8 relative font-sans transition-all duration-300">
       
-      {/* Header Section */}
-      <div className="flex justify-between items-start mb-8">
+      {/* Header */}
+      <div className="flex justify-between items-start mb-8 dark:mb-6 border-b border-gray-100 dark:border-[#2a2a28] pb-6 dark:pb-4 transition-colors">
         <div>
-          <h2 className="text-4xl font-bold tracking-tight text-white mb-2">Intelligence Analytics</h2>
-          <p className="text-sm text-mm-textMuted max-w-2xl leading-relaxed">
-            Q3 Network Flow Analysis & Fraud Cluster Detection. Real-time tactical reporting generated at <span className="text-mm-yellow font-medium">04:12 UTC</span>.
+          <h2 className="text-4xl dark:text-2xl font-bold tracking-tight dark:tracking-normal text-mm-textDark dark:text-white mb-2 dark:mb-1 dark:font-mono">Intelligence Analytics</h2>
+          <p className="text-sm dark:text-xs text-mm-textMuted dark:text-mm-dark-textMuted tracking-wide dark:tracking-normal font-medium dark:font-normal dark:font-mono">
+            Deep inspection of high-confidence threat clusters.
           </p>
         </div>
-        <div className="flex gap-4">
-          <button className="flex items-center gap-2 bg-[#2a2a28] hover:bg-[#32322a] text-white px-5 py-2.5 rounded font-bold text-[11px] tracking-wider transition-colors">
-            <FileText size={14} />
-            EXPORT CSV
+        <div className="flex gap-4 dark:gap-3">
+          <button className="bg-mm-bg dark:bg-[#1a1a18] border border-gray-200 dark:border-[#32322a] hover:border-gray-300 dark:hover:border-mm-dark-textSubtle text-mm-textDark dark:text-white px-6 dark:px-4 py-3 dark:py-2 rounded-[16px] dark:rounded-lg text-xs dark:text-[10px] font-bold tracking-wider dark:tracking-[0.1em] uppercase transition-all duration-300 flex items-center gap-2 shadow-sm dark:shadow-none hover:shadow-md dark:hover:bg-[#212120] hover:-translate-y-1 dark:hover:translate-y-0 dark:font-mono">
+            <Download size={14} className="dark:w-3 dark:h-3" />
+            Export CSV
           </button>
-          <button className="flex items-center gap-2 bg-mm-yellow hover:bg-mm-yellowHover text-black px-5 py-2.5 rounded font-bold text-[11px] tracking-wider transition-colors shadow-[0_0_15px_rgba(255,197,0,0.2)]">
-            <Download size={14} />
-            EXPORT PDF
+          <button className="bg-mm-bg dark:bg-[#1a1a18] border border-gray-200 dark:border-[#32322a] hover:border-gray-300 dark:hover:border-mm-dark-textSubtle text-mm-textDark dark:text-white px-6 dark:px-4 py-3 dark:py-2 rounded-[16px] dark:rounded-lg text-xs dark:text-[10px] font-bold tracking-wider dark:tracking-[0.1em] uppercase transition-all duration-300 flex items-center gap-2 shadow-sm dark:shadow-none hover:shadow-md dark:hover:bg-[#212120] hover:-translate-y-1 dark:hover:translate-y-0 dark:font-mono">
+            <FileText size={14} className="dark:w-3 dark:h-3" />
+            Export PDF
           </button>
         </div>
       </div>
 
-      {/* Top Row: Map & Risk */}
-      <div className="grid grid-cols-12 gap-6 mb-6">
+      <div className="grid grid-cols-12 gap-8 dark:gap-6">
         
-        {/* Active Fraud Nodes Map */}
-        <div className="col-span-8 bg-[#212120] rounded-xl p-8 border border-[#2a2a28] shadow-xl relative overflow-hidden flex flex-col">
-          <div className="flex justify-between items-start mb-4">
-            <div>
-              <div className="font-mono text-[9px] text-mm-yellow tracking-[0.2em] mb-2 uppercase font-bold">Visual Cluster</div>
-              <h3 className="text-2xl font-bold text-white">Active Fraud Nodes</h3>
-            </div>
-            <div className="bg-[#cc0000] text-white font-mono text-[9px] font-bold tracking-wider px-3 py-1 rounded">
-              HIGH THREAT
-            </div>
-          </div>
-
-          <div className="flex-1 relative mt-4 min-h-[250px] bg-[#1a1a18] rounded-lg border border-[#262622] overflow-hidden">
-            {/* World Map Pattern Simulation */}
-            <div className="absolute inset-0 opacity-20" style={{
-              backgroundImage: 'radial-gradient(circle at center, #ffc500 1px, transparent 1px)',
-              backgroundSize: '15px 15px',
-              maskImage: 'radial-gradient(ellipse at center, black, transparent 80%)',
-              WebkitMaskImage: 'radial-gradient(ellipse at center, black, transparent 80%)'
-            }}></div>
-            
-            {/* Radar / Nodes */}
-            <div className="absolute top-1/2 left-[40%] -translate-x-1/2 -translate-y-1/2">
-              <div className="w-40 h-40 border border-mm-yellow/30 rounded-full flex items-center justify-center">
-                <div className="w-20 h-20 border border-mm-yellow/50 rounded-full flex items-center justify-center">
-                  <div className="w-3 h-3 bg-mm-yellow rounded-full shadow-[0_0_15px_#ffc500]"></div>
-                </div>
-              </div>
-            </div>
-            
-            <div className="absolute top-1/2 left-[60%] -translate-x-1/2 -translate-y-1/2">
-              <div className="w-32 h-32 border border-[#ff8080]/30 rounded-full flex items-center justify-center">
-                <div className="w-3 h-3 bg-[#ff8080] rounded-full shadow-[0_0_15px_#ff8080]"></div>
+        {/* Left Column - Large Map & Volume */}
+        <div className="col-span-8 flex flex-col gap-8 dark:gap-6">
+          
+          {/* Active Fraud Nodes Map Card */}
+          <div className="bg-mm-bg dark:bg-[#1a1a18] rounded-[28px] dark:rounded-xl border border-gray-100 dark:border-[#2a2a28] p-8 dark:p-6 shadow-sm dark:shadow-lg hover:shadow-premium dark:hover:shadow-lg transition-all duration-300">
+            <div className="flex justify-between items-center mb-6 dark:mb-4">
+              <h3 className="font-bold text-lg dark:text-sm text-mm-textDark dark:text-white dark:font-mono">Active Fraud Nodes</h3>
+              <div className="flex items-center gap-2 bg-white dark:bg-transparent px-4 dark:px-0 py-2 dark:py-0 rounded-xl dark:rounded-none shadow-sm dark:shadow-none border border-gray-100 dark:border-none cursor-pointer hover:bg-gray-50 dark:hover:bg-transparent transition-all">
+                <span className="text-[10px] dark:text-[9px] text-mm-textMuted dark:text-mm-dark-textSubtle tracking-wider dark:tracking-[0.1em] font-bold dark:font-mono uppercase">Timeframe:</span>
+                <span className="text-[10px] dark:text-[9px] text-mm-textDark dark:text-white font-bold dark:font-mono tracking-wider dark:tracking-[0.1em] uppercase border-b dark:border-mm-dark-textSubtle">Last 24H</span>
+                <ChevronDown size={14} className="text-mm-textMuted dark:text-mm-dark-textSubtle dark:w-3 dark:h-3" />
               </div>
             </div>
 
-            {/* Bottom Left Centroid Density */}
-            <div className="absolute bottom-4 left-4 bg-[#262622]/90 backdrop-blur border border-[#32322a] rounded-lg p-3">
-              <div className="font-mono text-[8px] text-mm-textSubtle tracking-[0.1em] uppercase mb-1">Centroid Density</div>
-              <div className="text-xl font-bold text-mm-yellow">89.4%</div>
-            </div>
-          </div>
-        </div>
-
-        {/* Aggregated Risk */}
-        <div className="col-span-4 bg-[#212120] rounded-xl p-8 border border-[#2a2a28] shadow-xl flex flex-col justify-between">
-          <div>
-            <div className="font-mono text-[10px] text-mm-textSubtle tracking-[0.2em] uppercase font-bold mb-8">Aggregated Risk</div>
-            <div className="text-center mb-10">
-              <div className="text-7xl font-bold tracking-tighter text-[#ffe699] mb-2 leading-none">74</div>
-              <div className="font-mono text-[9px] text-mm-textMuted tracking-[0.2em] uppercase">Global Threat Score</div>
-            </div>
-            
-            <div className="w-full h-2 bg-[#1a1a18] rounded-full overflow-hidden mb-12">
-              <div className="h-full bg-gradient-to-r from-mm-yellow to-[#ff8080] w-[74%]"></div>
-            </div>
-          </div>
-
-          <div className="space-y-4">
-            <div className="flex justify-between items-center border-b border-[#2a2a28] pb-4">
-              <span className="font-mono text-[10px] text-mm-textSubtle tracking-[0.1em] uppercase">Active Vectors</span>
-              <span className="font-bold text-sm text-white">1,204</span>
-            </div>
-            <div className="flex justify-between items-center border-b border-[#2a2a28] pb-4">
-              <span className="font-mono text-[10px] text-mm-textSubtle tracking-[0.1em] uppercase">Latency Drift</span>
-              <span className="font-bold text-sm text-white">+12ms</span>
-            </div>
-            <div className="flex justify-between items-center">
-              <span className="font-mono text-[10px] text-mm-textSubtle tracking-[0.1em] uppercase">Signal Integrity</span>
-              <span className="font-bold text-sm text-white">OPTIMAL</span>
-            </div>
-          </div>
-        </div>
-
-      </div>
-
-      {/* Middle Row: Trends & Feed */}
-      <div className="grid grid-cols-12 gap-6 mb-6 h-[340px]">
-        
-        {/* Flow Trends Chart */}
-        <div className="col-span-4 bg-[#212120] rounded-xl p-6 border border-[#2a2a28] shadow-xl flex flex-col">
-          <div className="flex justify-between items-center mb-6">
-            <h3 className="text-lg font-bold text-white">Flow Trends</h3>
-            <MoreVertical size={16} className="text-mm-textSubtle" />
-          </div>
-
-          {/* Simple Bar Chart */}
-          <div className="flex-1 flex items-end justify-between gap-2 mb-6 border-b border-[#2a2a28] pb-2">
-            {[3, 4, 6, 9, 10, 6, 4, 3, 4, 3].map((height, i) => (
-              <div key={i} className={`w-full rounded-t-sm transition-colors ${i === 4 ? 'bg-mm-yellow' : 'bg-[#32322a]'}`} style={{ height: `${height * 10}%` }}></div>
-            ))}
-          </div>
-
-          <div className="grid grid-cols-2 gap-4">
-            <div className="bg-[#1a1a18] p-3 rounded border border-[#262622]">
-              <div className="font-mono text-[8px] text-mm-textSubtle tracking-[0.1em] uppercase mb-1">Peak Volume</div>
-              <div className="font-bold text-sm text-white">1.2 TB/s</div>
-            </div>
-            <div className="bg-[#1a1a18] p-3 rounded border border-[#262622]">
-              <div className="font-mono text-[8px] text-mm-textSubtle tracking-[0.1em] uppercase mb-1">Average Ops</div>
-              <div className="font-bold text-sm text-white">842 req/m</div>
-            </div>
-          </div>
-        </div>
-
-        {/* Tactical Feed */}
-        <div className="col-span-8 bg-[#212120] rounded-xl border border-[#2a2a28] shadow-xl flex flex-col overflow-hidden">
-          <div className="p-5 border-b border-[#2a2a28] flex justify-between items-center bg-[#1a1a18]">
-            <h3 className="font-mono text-[10px] font-bold tracking-[0.2em] text-mm-textSubtle uppercase">Tactical Feed // Suspicious Events</h3>
-            <span className="font-mono text-[8px] tracking-[0.1em] text-mm-textMuted uppercase">Auto-Refresh: ON</span>
-          </div>
-
-          <div className="flex-1 overflow-y-auto p-2">
-            <div className="space-y-1">
+            <div className="h-[280px] dark:h-[240px] w-full bg-white dark:bg-[#11110f] rounded-3xl dark:rounded-lg border border-gray-100 dark:border-[#2a2a28] relative overflow-hidden flex items-center justify-center shadow-sm dark:shadow-[inset_0_0_20px_rgba(0,0,0,0.5)] transition-all">
+              {/* Map Visualization Backgrounds */}
+              <div className="absolute inset-0 bg-[radial-gradient(#FCFAF8_1px,transparent_1px)] [background-size:16px_16px] opacity-50 dark:hidden"></div>
+              <div className="absolute inset-0 hidden dark:block" style={{
+                backgroundImage: 'radial-gradient(circle at center, #32322a 1px, transparent 1px)',
+                backgroundSize: '24px 24px',
+                opacity: 0.3
+              }}></div>
               
-              {/* Event 1 */}
-              <div className="p-4 hover:bg-[#2a2a28] rounded-lg transition-colors flex items-center justify-between group">
-                <div className="flex items-center gap-4">
-                  <div className="w-8 h-8 rounded-full bg-[#ff4d4d]/10 flex items-center justify-center border border-[#ff4d4d]/20 shrink-0">
-                    <AlertTriangle size={14} className="text-[#ff4d4d]" />
-                  </div>
-                  <div>
-                    <div className="font-bold text-sm text-white mb-1">Rapid Sequence Outflow</div>
-                    <div className="font-mono text-[9px] text-mm-textSubtle">ID: MM-90231 // Wallet Cluster Beta</div>
-                  </div>
+              {/* Central Tracker Node */}
+              <div className="relative">
+                <div className="w-48 h-48 dark:w-40 dark:h-40 border border-mm-yellow/20 dark:border-mm-yellow/10 rounded-full absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate-[spin_10s_linear_infinite]"></div>
+                <div className="w-32 h-32 dark:w-24 dark:h-24 border border-mm-yellow/40 dark:border-[#ff4d4d]/20 rounded-full absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate-[spin_6s_linear_infinite_reverse]"></div>
+                <div className="w-48 h-48 dark:w-40 dark:h-40 border border-transparent dark:border-mm-yellow/5 border-l-mm-yellow/30 rounded-full absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate-[spin_4s_linear_infinite] hidden dark:block"></div>
+                
+                <div className="w-16 h-16 dark:w-12 dark:h-12 bg-mm-yellow/10 dark:bg-mm-yellow/5 border-2 border-mm-yellow dark:border-mm-yellow/50 rounded-full flex items-center justify-center relative z-10 shadow-sm dark:shadow-[0_0_20px_rgba(255,197,0,0.2)] cursor-pointer hover:scale-110 dark:hover:scale-100 transition-transform">
+                  <Activity size={24} className="text-mm-textDark dark:text-mm-yellow dark:w-5 dark:h-5" />
                 </div>
-                <div className="flex flex-col items-end">
-                  <div className="font-bold text-sm text-[#ff8080] mb-1">$452,100</div>
-                  <div className="font-mono text-[8px] text-mm-textMuted uppercase tracking-wider">2M AGO</div>
-                </div>
+                
+                {/* Secondary nodes */}
+                <div className="absolute -top-12 -right-16 dark:-top-10 dark:-right-12 w-4 h-4 dark:w-3 dark:h-3 bg-white dark:bg-mm-yellow border-2 border-mm-yellow dark:border-none rounded-full shadow-sm dark:shadow-[0_0_10px_#ffc500] cursor-pointer hover:scale-150 dark:hover:scale-100 transition-transform"></div>
+                <div className="absolute bottom-8 -left-20 dark:bottom-6 dark:-left-16 w-3 h-3 dark:w-2 dark:h-2 bg-white dark:bg-[#ff4d4d] border-2 border-[#ff4d4d] dark:border-none rounded-full shadow-sm dark:shadow-[0_0_10px_#ff4d4d] cursor-pointer hover:scale-150 dark:hover:scale-100 transition-transform"></div>
+                
+                {/* Connecting Lines for Dark Mode */}
+                <svg className="absolute top-1/2 left-1/2 w-[200px] h-[200px] -translate-x-1/2 -translate-y-1/2 pointer-events-none hidden dark:block" viewBox="0 0 200 200">
+                  <path d="M100,100 L140,60" stroke="#ffc500" strokeWidth="1" strokeDasharray="2 2" className="opacity-30"/>
+                  <path d="M100,100 L40,140" stroke="#ff4d4d" strokeWidth="1" strokeDasharray="2 2" className="opacity-30"/>
+                </svg>
               </div>
 
-              {/* Event 2 */}
-              <div className="p-4 hover:bg-[#2a2a28] rounded-lg transition-colors flex items-center justify-between group">
-                <div className="flex items-center gap-4">
-                  <div className="w-8 h-8 rounded-full bg-mm-yellow/10 flex items-center justify-center border border-mm-yellow/20 shrink-0">
-                    <ArrowLeftRight size={14} className="text-mm-yellow" />
-                  </div>
-                  <div>
-                    <div className="font-bold text-sm text-white mb-1">Cross-Border Anomaly</div>
-                    <div className="font-mono text-[9px] text-mm-textSubtle">ID: MM-88412 // APAC Node 04</div>
-                  </div>
-                </div>
-                <div className="flex flex-col items-end">
-                  <div className="font-bold text-sm text-white mb-1">$12,400</div>
-                  <div className="font-mono text-[8px] text-mm-textMuted uppercase tracking-wider">14M AGO</div>
-                </div>
+              {/* Map Info Box */}
+              <div className="absolute bottom-6 right-6 dark:bottom-4 dark:right-4 bg-white/90 dark:bg-[#1a1a18]/90 backdrop-blur-md border border-gray-100 dark:border-[#2a2a28] px-5 dark:px-4 py-3 dark:py-2 rounded-2xl dark:rounded-lg shadow-sm dark:shadow-none transition-all">
+                <div className="text-[10px] dark:text-[8px] text-mm-textMuted dark:text-mm-dark-textSubtle tracking-wider dark:tracking-[0.1em] font-bold dark:font-mono uppercase mb-1 dark:mb-0">Centroid Density</div>
+                <div className="text-xl dark:text-lg font-bold text-mm-textDark dark:text-white dark:font-mono">89.4%</div>
               </div>
-
-              {/* Event 3 */}
-              <div className="p-4 hover:bg-[#2a2a28] rounded-lg transition-colors flex items-center justify-between group">
-                <div className="flex items-center gap-4">
-                  <div className="w-8 h-8 rounded-full bg-[#32322a] flex items-center justify-center border border-[#3a3a32] shrink-0">
-                    <Info size={14} className="text-mm-textMuted" />
-                  </div>
-                  <div>
-                    <div className="font-bold text-sm text-white mb-1">Login Geo-Inconsistency</div>
-                    <div className="font-mono text-[9px] text-mm-textSubtle">ID: MM-77123 // User 88219-X</div>
-                  </div>
-                </div>
-                <div className="flex flex-col items-end">
-                  <div className="font-bold text-sm text-white mb-1">N/A</div>
-                  <div className="font-mono text-[8px] text-mm-textMuted uppercase tracking-wider">22M AGO</div>
-                </div>
-              </div>
-
-              {/* Event 4 */}
-              <div className="p-4 hover:bg-[#2a2a28] rounded-lg transition-colors flex items-center justify-between group">
-                <div className="flex items-center gap-4">
-                  <div className="w-8 h-8 rounded-full bg-[#ff4d4d]/10 flex items-center justify-center border border-[#ff4d4d]/20 shrink-0">
-                    <ShieldAlert size={14} className="text-[#ff4d4d]" />
-                  </div>
-                  <div>
-                    <div className="font-bold text-sm text-white mb-1">Multiple Auth Failure</div>
-                    <div className="font-mono text-[9px] text-mm-textSubtle">ID: MM-90234 // Admin Terminal 01</div>
-                  </div>
-                </div>
-                <div className="flex flex-col items-end">
-                  <div className="font-bold text-sm text-[#ff8080] mb-1">FAILED</div>
-                  <div className="font-mono text-[8px] text-mm-textMuted uppercase tracking-wider">45M AGO</div>
-                </div>
-              </div>
-
             </div>
           </div>
-          
-          <div className="p-3 border-t border-[#2a2a28] bg-[#1a1a18] text-center">
-            <button className="text-[10px] font-mono font-bold tracking-[0.2em] text-mm-yellow hover:text-mm-yellowHover transition-colors uppercase">
-              View Full Terminal Logs
-            </button>
-          </div>
-        </div>
 
-      </div>
-
-      {/* Bottom Row: Mini Charts & Status */}
-      <div className="grid grid-cols-12 gap-6">
-        
-        {/* Volume Analytics */}
-        <div className="col-span-4 bg-[#212120] rounded-xl p-6 border border-[#2a2a28] shadow-xl flex flex-col justify-between h-[180px]">
-          <div className="font-mono text-[9px] text-mm-textSubtle tracking-[0.1em] uppercase mb-4">Volume Analytics</div>
-          
-          <div className="flex-1 flex items-end justify-center gap-1.5 mb-2">
-             {[4, 5, 8, 10, 8, 5, 4].map((h, i) => (
-                <div key={i} className={`w-6 rounded-t-sm ${i >= 2 && i <= 4 ? 'bg-mm-yellow shadow-[0_0_10px_rgba(255,197,0,0.5)]' : 'bg-[#32322a]'}`} style={{ height: `${h * 10}%` }}></div>
-             ))}
-          </div>
-
-          <div className="flex justify-between items-end">
-            <div>
-              <div className="text-2xl font-bold text-white leading-none">14.8k</div>
-              <div className="font-mono text-[8px] text-mm-textMuted uppercase mt-1">Weekly Events</div>
-            </div>
-            <div className="text-right">
-              <div className="text-sm font-bold text-mm-yellow leading-none">+22.4%</div>
-              <div className="font-mono text-[8px] text-mm-textMuted uppercase mt-1">vs Prev Week</div>
-            </div>
-          </div>
-        </div>
-
-        {/* Entity Integrity */}
-        <div className="col-span-4 bg-[#212120] rounded-xl p-6 border border-[#2a2a28] shadow-xl flex flex-col justify-between h-[180px]">
-          <div className="font-mono text-[9px] text-mm-textSubtle tracking-[0.1em] uppercase mb-4">Entity Integrity</div>
-          
-          <div className="space-y-4 flex-1 flex flex-col justify-center">
-            <div className="flex items-center gap-4">
-              <div className="w-24 text-xs font-medium text-white">Verified Nodes</div>
-              <div className="flex-1 h-1.5 bg-[#1a1a18] rounded-full overflow-hidden">
-                <div className="h-full bg-mm-yellow w-[94%]"></div>
-              </div>
-              <div className="w-8 text-right font-mono text-[9px] font-bold text-white">94%</div>
-            </div>
-
-            <div className="flex items-center gap-4">
-              <div className="w-24 text-xs font-medium text-white leading-tight">Flagged IP Segments</div>
-              <div className="flex-1 h-1.5 bg-[#1a1a18] rounded-full overflow-hidden relative">
-                <div className="absolute top-0 left-0 h-full bg-[#ff8080] w-[12%]"></div>
-              </div>
-              <div className="w-8 text-right font-mono text-[9px] font-bold text-white">12%</div>
-            </div>
-
-            <div className="flex items-center gap-4">
-              <div className="w-24 text-xs font-medium text-white leading-tight">Cold Storage Sync</div>
-              <div className="flex-1 h-1.5 bg-[#1a1a18] rounded-full overflow-hidden relative">
-                <div className="absolute top-0 right-0 h-full bg-mm-textMuted w-[5%]"></div>
-              </div>
-              <div className="w-8 text-right font-mono text-[9px] font-bold text-white">OK</div>
-            </div>
-          </div>
-        </div>
-
-        {/* Network Status */}
-        <div className="col-span-4 bg-[#212120] rounded-xl p-6 border border-[#2a2a28] shadow-xl flex flex-col h-[180px]">
-          <div className="font-mono text-[9px] text-mm-textSubtle tracking-[0.1em] uppercase mb-4">Network Status</div>
-          
-          <div className="flex items-center gap-6 flex-1">
-            <div className="relative w-16 h-16 shrink-0">
-              {/* SVG Donut Chart */}
-              <svg viewBox="0 0 36 36" className="w-full h-full rotate-[-90deg]">
-                <path className="text-[#1a1a18]" strokeWidth="3" stroke="currentColor" fill="none"
-                  d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                <path className="text-mm-yellow" strokeDasharray="88, 100" strokeWidth="3" stroke="currentColor" fill="none"
-                  d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-              </svg>
-              <div className="absolute inset-0 flex items-center justify-center font-bold text-xs text-white">
-                88%
-              </div>
+          {/* Volume Analytics */}
+          <div className="bg-mm-bg dark:bg-[#1a1a18] rounded-[28px] dark:rounded-xl border border-gray-100 dark:border-[#2a2a28] p-8 dark:p-6 shadow-sm dark:shadow-lg hover:shadow-premium dark:hover:shadow-lg transition-all duration-300">
+            <div className="flex justify-between items-center mb-6 dark:mb-4">
+              <h3 className="font-bold text-lg dark:text-sm text-mm-textDark dark:text-white dark:font-mono">Volume Analytics</h3>
+              <div className="text-[10px] dark:text-[8px] text-mm-textMuted dark:text-mm-dark-textSubtle tracking-wider dark:tracking-[0.1em] font-bold dark:font-mono uppercase border-b dark:border-mm-dark-textSubtle">USD EQUIVALENT</div>
             </div>
             
-            <div>
-              <h4 className="font-bold text-white text-sm mb-1">Secure Core</h4>
-              <p className="text-[10px] text-mm-textMuted leading-relaxed">
-                All peripheral nodes responding within expected TTL limits.
-              </p>
+            <div className="h-40 dark:h-32 flex items-end gap-3 dark:gap-2 px-4 dark:px-2 transition-all">
+              {/* Bar Chart */}
+              {[40, 25, 60, 45, 80, 55, 30, 90, 65, 45, 70, 50].map((height, i) => (
+                <div key={i} className="flex-1 flex flex-col justify-end group">
+                  <div 
+                    className={`w-full rounded-t-lg dark:rounded-t-sm transition-all duration-300 cursor-pointer group-hover:bg-mm-yellow dark:group-hover:bg-[#ffc500]/80 ${i === 7 ? 'bg-mm-yellow dark:bg-mm-yellow shadow-sm dark:shadow-[0_0_15px_rgba(255,197,0,0.3)]' : 'bg-gray-200 dark:bg-[#2a2a28]'}`} 
+                    style={{ height: `${height}%` }}
+                  ></div>
+                </div>
+              ))}
             </div>
           </div>
+
+        </div>
+
+        {/* Right Column - Risk & Feed */}
+        <div className="col-span-4 flex flex-col gap-8 dark:gap-6">
+          
+          {/* Aggregated Risk Score */}
+          <div className="bg-mm-bg dark:bg-[#1a1a18] border border-gray-100 dark:border-[#2a2a28] rounded-[28px] dark:rounded-xl p-8 dark:p-6 shadow-sm dark:shadow-lg hover:shadow-premium dark:hover:shadow-lg transition-all duration-300 flex flex-col items-center justify-center text-center">
+            <h3 className="text-xs dark:text-[10px] text-mm-textMuted dark:text-mm-dark-textSubtle tracking-wider dark:tracking-[0.1em] font-bold dark:font-mono uppercase mb-6 dark:mb-4 w-full text-left">Aggregated Risk</h3>
+            
+            {/* Risk Circular Meter */}
+            <div className="w-36 h-36 dark:w-32 dark:h-32 rounded-full border-[8px] dark:border-[4px] border-gray-100 dark:border-[#2a2a28] flex flex-col items-center justify-center relative mb-6 dark:mb-4 shadow-sm dark:shadow-none bg-white dark:bg-transparent transition-all">
+              <div className="absolute inset-0 border-[8px] dark:border-[4px] border-mm-yellow rounded-full shadow-sm dark:shadow-[0_0_15px_rgba(255,197,0,0.3)]" style={{ clipPath: 'polygon(0 0, 100% 0, 100% 75%, 0 75%)' }}></div>
+              <span className="text-5xl dark:text-4xl font-bold text-mm-textDark dark:text-white tracking-tighter dark:tracking-normal dark:font-mono">74</span>
+              <span className="text-[10px] dark:text-[8px] text-mm-textMuted dark:text-mm-yellow tracking-wider dark:tracking-[0.1em] font-bold dark:font-mono uppercase mt-1">Critical</span>
+            </div>
+
+            <div className="w-full flex justify-between px-4 dark:px-0 border-t border-gray-100 dark:border-[#2a2a28] pt-6 dark:pt-4 mt-2 dark:mt-0 transition-colors">
+              <div className="text-left">
+                <div className="text-[10px] dark:text-[8px] text-mm-textMuted dark:text-mm-dark-textSubtle tracking-wider dark:tracking-[0.1em] font-bold dark:font-mono uppercase mb-1">Integrity</div>
+                <div className="font-bold text-lg dark:text-sm text-mm-textDark dark:text-white dark:font-mono">Low</div>
+              </div>
+              <div className="text-right">
+                <div className="text-[10px] dark:text-[8px] text-mm-textMuted dark:text-mm-dark-textSubtle tracking-wider dark:tracking-[0.1em] font-bold dark:font-mono uppercase mb-1">Velocity</div>
+                <div className="font-bold text-lg dark:text-sm text-[#ff4d4d] dark:font-mono">High</div>
+              </div>
+            </div>
+          </div>
+
+          {/* Flow Trends mini chart */}
+          <div className="bg-mm-bg dark:bg-[#1a1a18] border border-gray-100 dark:border-[#2a2a28] rounded-[28px] dark:rounded-xl p-8 dark:p-6 shadow-sm dark:shadow-lg hover:shadow-premium dark:hover:shadow-lg transition-all duration-300">
+            <h3 className="text-xs dark:text-[10px] text-mm-textMuted dark:text-mm-dark-textSubtle tracking-wider dark:tracking-[0.1em] font-bold dark:font-mono uppercase mb-6 dark:mb-4">Flow Trends</h3>
+            <div className="h-20 dark:h-16 flex items-end gap-2 dark:gap-1.5 transition-all">
+              {[20, 35, 25, 45, 30, 60, 40, 75, 50, 85].map((height, i) => (
+                <div key={i} className="flex-1 flex flex-col justify-end group">
+                  <div 
+                    className={`w-full rounded-md dark:rounded-sm transition-all duration-300 cursor-pointer group-hover:bg-mm-yellow dark:group-hover:bg-[#ffc500]/80 ${i === 9 ? 'bg-mm-yellow shadow-sm dark:shadow-[0_0_10px_rgba(255,197,0,0.3)]' : 'bg-gray-200 dark:bg-[#2a2a28]'}`} 
+                    style={{ height: `${height}%` }}
+                  ></div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Tactical Feed */}
+          <div className="bg-mm-bg dark:bg-[#1a1a18] border border-gray-100 dark:border-[#2a2a28] rounded-[28px] dark:rounded-xl p-6 shadow-sm dark:shadow-lg hover:shadow-premium dark:hover:shadow-lg transition-all duration-300 flex-1 flex flex-col overflow-hidden">
+            <h3 className="text-xs dark:text-[10px] text-mm-textMuted dark:text-mm-dark-textSubtle tracking-wider dark:tracking-[0.1em] font-bold dark:font-mono uppercase mb-4 px-2 dark:px-0">Tactical Feed</h3>
+            
+            <div className="flex-1 overflow-y-auto space-y-4 dark:space-y-3 pr-2 custom-scrollbar">
+              
+              <div className="bg-white dark:bg-[#11110f] border border-gray-100 dark:border-[#2a2a28] p-4 rounded-2xl dark:rounded-lg shadow-sm dark:shadow-none hover:-translate-y-1 dark:hover:translate-y-0 hover:shadow-md dark:hover:shadow-none dark:hover:border-[#ff8080]/50 transition-all cursor-pointer group">
+                <div className="flex gap-3">
+                  <div className="w-8 h-8 dark:w-7 dark:h-7 rounded-xl dark:rounded bg-[#ffebf0] dark:bg-[#330000]/50 text-[#ff4d4d] dark:text-[#ff8080] flex items-center justify-center shrink-0 transition-all">
+                    <ShieldAlert size={16} className="dark:w-3.5 dark:h-3.5" />
+                  </div>
+                  <div>
+                    <div className="text-sm dark:text-xs font-bold text-mm-textDark dark:text-white mb-1 dark:mb-0.5 leading-tight dark:font-mono">Rapid Sequence Outflow</div>
+                    <div className="text-[10px] dark:text-[9px] text-mm-textMuted dark:text-mm-dark-textMuted font-medium dark:font-mono">Multiple nodes • 12s ago</div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-white dark:bg-[#11110f] border border-gray-100 dark:border-[#2a2a28] p-4 rounded-2xl dark:rounded-lg shadow-sm dark:shadow-none hover:-translate-y-1 dark:hover:translate-y-0 hover:shadow-md dark:hover:shadow-none dark:hover:border-mm-yellow/50 transition-all cursor-pointer group">
+                <div className="flex gap-3">
+                  <div className="w-8 h-8 dark:w-7 dark:h-7 rounded-xl dark:rounded bg-mm-yellow/20 dark:bg-mm-yellow/10 text-mm-textDark dark:text-mm-yellow flex items-center justify-center shrink-0 transition-all">
+                    <RefreshCw size={16} className="dark:w-3.5 dark:h-3.5" />
+                  </div>
+                  <div>
+                    <div className="text-sm dark:text-xs font-bold text-mm-textDark dark:text-white mb-1 dark:mb-0.5 leading-tight dark:font-mono">Cross-Border Anomaly</div>
+                    <div className="text-[10px] dark:text-[9px] text-mm-textMuted dark:text-mm-dark-textMuted font-medium dark:font-mono">LU ↔ KY • 45s ago</div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-white dark:bg-[#11110f] border border-gray-100 dark:border-[#2a2a28] p-4 rounded-2xl dark:rounded-lg shadow-sm dark:shadow-none hover:-translate-y-1 dark:hover:translate-y-0 hover:shadow-md dark:hover:shadow-none dark:hover:border-mm-dark-textSubtle transition-all cursor-pointer group">
+                <div className="flex gap-3">
+                  <div className="w-8 h-8 dark:w-7 dark:h-7 rounded-xl dark:rounded bg-gray-100 dark:bg-[#1f1f1a] text-mm-textMuted dark:text-mm-dark-textSubtle flex items-center justify-center shrink-0 transition-all">
+                    <Fingerprint size={16} className="dark:w-3.5 dark:h-3.5" />
+                  </div>
+                  <div>
+                    <div className="text-sm dark:text-xs font-bold text-mm-textDark dark:text-white mb-1 dark:mb-0.5 leading-tight dark:font-mono">Signature Mismatch</div>
+                    <div className="text-[10px] dark:text-[9px] text-mm-textMuted dark:text-mm-dark-textMuted font-medium dark:font-mono">Auth Node 7 • 2m ago</div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      {/* Bottom Health Metrics */}
+      <div className="grid grid-cols-3 gap-8 dark:gap-6 mt-8 dark:mt-6 transition-all">
+        
+        <div className="bg-mm-bg dark:bg-[#1a1a18] border border-gray-100 dark:border-[#2a2a28] rounded-[24px] dark:rounded-xl p-6 dark:p-5 shadow-sm dark:shadow-lg hover:-translate-y-1 dark:hover:translate-y-0 hover:shadow-premium dark:hover:shadow-lg transition-all duration-300">
+          <div className="flex justify-between items-center mb-4 dark:mb-3">
+            <h3 className="text-xs dark:text-[10px] text-mm-textMuted dark:text-mm-dark-textSubtle tracking-wider dark:tracking-[0.1em] font-bold dark:font-mono uppercase">Entity Integrity</h3>
+            <span className="font-bold text-lg dark:text-sm text-mm-textDark dark:text-white dark:font-mono">82%</span>
+          </div>
+          <div className="h-2 dark:h-1.5 w-full bg-gray-200 dark:bg-[#2a2a28] rounded-full overflow-hidden transition-all">
+             <div className="h-full w-[82%] bg-mm-yellow dark:shadow-[0_0_8px_#ffc500] rounded-full"></div>
+          </div>
+        </div>
+
+        <div className="bg-mm-bg dark:bg-[#1a1a18] border border-gray-100 dark:border-[#2a2a28] rounded-[24px] dark:rounded-xl p-6 dark:p-5 shadow-sm dark:shadow-lg hover:-translate-y-1 dark:hover:translate-y-0 hover:shadow-premium dark:hover:shadow-lg transition-all duration-300">
+          <div className="flex justify-between items-center mb-4 dark:mb-3">
+            <h3 className="text-xs dark:text-[10px] text-mm-textMuted dark:text-mm-dark-textSubtle tracking-wider dark:tracking-[0.1em] font-bold dark:font-mono uppercase">Network Status</h3>
+            <span className="font-bold text-lg dark:text-sm text-mm-textDark dark:text-white dark:font-mono">Optimal</span>
+          </div>
+          <div className="h-2 dark:h-1.5 w-full bg-gray-200 dark:bg-[#2a2a28] rounded-full overflow-hidden transition-all">
+             <div className="h-full w-[100%] bg-mm-yellow dark:shadow-[0_0_8px_#ffc500] rounded-full"></div>
+          </div>
+        </div>
+
+        <div className="bg-mm-bg dark:bg-[#1a1a18] border border-gray-100 dark:border-[#2a2a28] rounded-[24px] dark:rounded-xl p-6 dark:p-5 shadow-sm dark:shadow-lg hover:-translate-y-1 dark:hover:translate-y-0 hover:shadow-premium dark:hover:shadow-lg transition-all duration-300 flex items-center justify-between">
+           <div>
+             <h3 className="text-xs dark:text-[10px] text-mm-textMuted dark:text-mm-dark-textSubtle tracking-wider dark:tracking-[0.1em] font-bold dark:font-mono uppercase mb-1">Secure Core</h3>
+             <div className="font-bold text-lg dark:text-sm text-mm-textDark dark:text-white dark:font-mono">Online</div>
+           </div>
+           <div className="w-12 h-12 dark:w-10 dark:h-10 rounded-full border-4 dark:border-2 border-mm-yellow flex items-center justify-center bg-white dark:bg-transparent shadow-sm dark:shadow-[0_0_15px_rgba(255,197,0,0.2)] transition-all">
+             <ShieldAlert size={16} className="text-mm-textDark dark:text-mm-yellow dark:w-4 dark:h-4" />
+           </div>
         </div>
 
       </div>
