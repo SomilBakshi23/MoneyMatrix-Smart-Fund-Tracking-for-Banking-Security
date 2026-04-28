@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Target, 
   Share2, 
@@ -25,6 +26,11 @@ import SettingsView from './SettingsView';
 export default function Dashboard({ onLogout }) {
   const [activeTab, setActiveTab] = useState('monitor');
   const [isDarkMode, setIsDarkMode] = useState(false);
+  
+  // Theme Expansion Overlay States
+  const [isExpanding, setIsExpanding] = useState(false);
+  const [overlayPos, setOverlayPos] = useState({ x: window.innerWidth - 60, y: 60 });
+  const [targetThemeIsDark, setTargetThemeIsDark] = useState(false);
 
   // Apply dark mode class to HTML element
   useEffect(() => {
@@ -35,15 +41,50 @@ export default function Dashboard({ onLogout }) {
     }
   }, [isDarkMode]);
 
-  const toggleTheme = () => {
-    setIsDarkMode(!isDarkMode);
+  const handleThemeToggle = (e) => {
+    const nextTheme = !isDarkMode;
+
+    // Get click coordinates for the origin of the wave
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = rect.left + rect.width / 2;
+    const y = rect.top + rect.height / 2;
+
+    // 1. Prepare overlay
+    setOverlayPos({ x, y });
+    setTargetThemeIsDark(nextTheme);
+    
+    // 2. Start expansion wave
+    setIsExpanding(true);
+
+    // 3. Once the wave covers the screen (400ms), switch the actual underlying UI
+    setTimeout(() => {
+      setIsDarkMode(nextTheme);
+    }, 400);
+
+    // 4. Shrink/reset the overlay after the UI has updated (800ms)
+    // Since the underlying UI now matches the overlay's color, shrinking it is invisible.
+    setTimeout(() => {
+      setIsExpanding(false);
+    }, 800);
   };
 
   return (
-    <div className="h-screen w-full bg-mm-bg dark:bg-[#0d0d0c] text-mm-textDark dark:text-white font-sans flex overflow-hidden p-4 dark:p-0 gap-6 dark:gap-0 transition-colors duration-300 dark:selection:bg-mm-yellow dark:selection:text-black">
+    <div className={`h-screen w-full font-sans flex overflow-hidden p-4 dark:p-0 gap-6 dark:gap-0 dark:selection:bg-mm-yellow dark:selection:text-black transition-colors duration-700 ${isDarkMode ? 'bg-[#0d0d0c] text-white' : 'bg-mm-bg text-mm-textDark'}`}>
       
+      {/* Theme Expansion Overlay (The Wave) */}
+      <motion.div
+        initial={false}
+        animate={{
+          clipPath: isExpanding 
+            ? `circle(3000px at ${overlayPos.x}px ${overlayPos.y}px)` 
+            : `circle(0px at ${overlayPos.x}px ${overlayPos.y}px)`,
+          transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] }
+        }}
+        className={`fixed inset-0 z-[9999] pointer-events-none ${targetThemeIsDark ? 'bg-[#0d0d0c]' : 'bg-[#FCFAF8]'}`}
+      />
+
       {/* Sidebar */}
-      <aside className="w-72 dark:w-64 bg-mm-card dark:bg-[#0a0a0a] rounded-[28px] dark:rounded-none shadow-premium dark:shadow-none dark:border-r dark:border-[#1f1f1a] flex flex-col justify-between shrink-0 h-full relative z-20 py-8 px-6 dark:p-8 dark:pb-6 transition-all duration-300">
+      <aside className={`w-72 dark:w-64 rounded-[28px] dark:rounded-none shadow-premium dark:shadow-none dark:border-r dark:border-[#1f1f1a] flex flex-col justify-between shrink-0 h-full relative z-20 py-8 px-6 dark:p-8 dark:pb-6 transition-colors duration-700 ${isDarkMode ? 'bg-[#0a0a0a]' : 'bg-mm-card'}`}>
         <div>
           {/* Logo Section */}
           <div className="mb-10 pl-2 dark:mb-8 dark:pl-0">
@@ -51,7 +92,18 @@ export default function Dashboard({ onLogout }) {
               MoneyMatrix
             </h1>
             <div className="text-[10px] dark:text-[9px] text-mm-textMuted dark:text-mm-dark-textSubtle uppercase font-bold tracking-wider dark:tracking-[0.2em] dark:font-mono">
-              {isDarkMode ? 'Signal Black Terminal' : 'Premium Portal'}
+              <AnimatePresence mode="wait">
+                <motion.span
+                  key={isDarkMode ? 'dark' : 'light'}
+                  initial={{ opacity: 0, y: 5 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -5 }}
+                  transition={{ duration: 0.3 }}
+                  className="block"
+                >
+                  {isDarkMode ? 'Signal Black Terminal' : 'Premium Portal'}
+                </motion.span>
+              </AnimatePresence>
             </div>
           </div>
 
@@ -80,7 +132,7 @@ export default function Dashboard({ onLogout }) {
                     ? 'bg-mm-yellow dark:bg-mm-yellow/5 text-mm-textDark dark:text-mm-yellow shadow-md dark:shadow-[inset_20px_0_20px_-20px_rgba(255,197,0,0.2)] scale-[1.02] dark:scale-100 dark:border-l-[3px] dark:border-mm-yellow' 
                     : 'text-mm-textMuted dark:text-mm-dark-textMuted hover:bg-gray-50 dark:hover:bg-transparent dark:hover:text-white hover:text-mm-textDark dark:border-l-[3px] dark:border-transparent'}`}
               >
-                <item.icon size={isDarkMode ? 18 : 20} />
+                <item.icon size={isDarkMode ? 18 : 20} className="transition-transform duration-300" />
                 {item.label}
               </button>
             ))}
@@ -101,10 +153,10 @@ export default function Dashboard({ onLogout }) {
       </aside>
 
       {/* Main Interface Area */}
-      <div className="flex-1 flex flex-col min-w-0 relative dark:bg-[#0d0d0c]">
+      <div className="flex-1 flex flex-col min-w-0 relative">
         
         {/* Top Header */}
-        <header className="h-20 bg-mm-card dark:bg-[#0a0a0a]/80 dark:backdrop-blur-md rounded-[28px] dark:rounded-none shadow-premium dark:shadow-none dark:border-b dark:border-[#1f1f1a] flex items-center justify-between px-8 shrink-0 z-20 mb-6 dark:mb-0 transition-all duration-300">
+        <header className={`h-20 rounded-[28px] dark:rounded-none shadow-premium dark:shadow-none dark:border-b dark:border-[#1f1f1a] flex items-center justify-between px-8 shrink-0 z-20 mb-6 dark:mb-0 transition-colors duration-700 ${isDarkMode ? 'bg-[#0a0a0a]/80 backdrop-blur-md' : 'bg-mm-card'}`}>
           <div className="flex items-center gap-12 h-full">
             <div className="font-bold text-mm-textDark dark:text-mm-yellow tracking-wider text-sm uppercase dark:font-mono">
               MoneyMatrix // Tactical
@@ -125,17 +177,29 @@ export default function Dashboard({ onLogout }) {
 
           <div className="flex items-center gap-6">
             <div className="flex items-center gap-4 text-mm-textDark dark:text-mm-yellow">
-              {/* Theme Toggle Button */}
+              {/* Animated Theme Toggle Button */}
               <button 
-                onClick={toggleTheme}
-                className="hover:text-mm-yellow dark:hover:text-white transition-colors w-10 h-10 rounded-full bg-gray-50 dark:bg-transparent flex items-center justify-center border dark:border-[#32322a] border-transparent"
+                onClick={handleThemeToggle}
+                className="relative overflow-hidden hover:text-mm-yellow dark:hover:text-white transition-colors w-10 h-10 rounded-full bg-gray-50 dark:bg-[#11110f] flex items-center justify-center border dark:border-[#32322a] border-transparent"
                 title="Toggle Theme"
               >
-                {isDarkMode ? <Sun size={18} /> : <Moon size={20} />}
+                <AnimatePresence mode="wait" initial={false}>
+                  <motion.div
+                    key={isDarkMode ? 'dark' : 'light'}
+                    initial={{ y: -30, opacity: 0, rotate: -90 }}
+                    animate={{ y: 0, opacity: 1, rotate: 0 }}
+                    exit={{ y: 30, opacity: 0, rotate: 90 }}
+                    transition={{ duration: 0.3, type: 'spring', stiffness: 200, damping: 15 }}
+                    className="absolute"
+                  >
+                    {isDarkMode ? <Sun size={18} /> : <Moon size={20} />}
+                  </motion.div>
+                </AnimatePresence>
               </button>
-              <button className="hover:text-mm-yellow dark:hover:text-white transition-colors w-10 h-10 rounded-full bg-gray-50 dark:bg-transparent flex items-center justify-center"><Grid size={isDarkMode ? 20 : 20} /></button>
-              <button className="hover:text-mm-yellow dark:hover:text-white transition-colors w-10 h-10 rounded-full bg-gray-50 dark:bg-transparent flex items-center justify-center"><SlidersHorizontal size={isDarkMode ? 20 : 20} /></button>
-              <button className="hover:text-mm-yellow dark:hover:text-white transition-colors w-10 h-10 rounded-full bg-gray-50 dark:bg-transparent flex items-center justify-center"><UserCircle size={isDarkMode ? 22 : 22} /></button>
+
+              <button className="hover:text-mm-yellow dark:hover:text-white transition-colors w-10 h-10 rounded-full bg-gray-50 dark:bg-[#11110f] flex items-center justify-center"><Grid size={isDarkMode ? 20 : 20} /></button>
+              <button className="hover:text-mm-yellow dark:hover:text-white transition-colors w-10 h-10 rounded-full bg-gray-50 dark:bg-[#11110f] flex items-center justify-center"><SlidersHorizontal size={isDarkMode ? 20 : 20} /></button>
+              <button className="hover:text-mm-yellow dark:hover:text-white transition-colors w-10 h-10 rounded-full bg-gray-50 dark:bg-[#11110f] flex items-center justify-center"><UserCircle size={isDarkMode ? 22 : 22} /></button>
             </div>
           </div>
         </header>
