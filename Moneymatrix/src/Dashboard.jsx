@@ -23,6 +23,7 @@ import AlertsView from './AlertsView';
 import InspectView from './InspectView';
 import MonitorView from './MonitorView';
 import SettingsView from './SettingsView';
+import SupportView from './SupportView';
 import { useTheme } from './ThemeContext';
 
 export default function Dashboard({ onLogout }) {
@@ -130,8 +131,14 @@ export default function Dashboard({ onLogout }) {
 
         {/* Bottom Actions */}
         <div className="flex flex-col gap-2 dark:gap-0 dark:mb-4">
-          <button className="flex items-center gap-4 px-6 dark:px-8 py-4 rounded-[20px] dark:rounded-none text-mm-textMuted dark:text-mm-dark-textMuted hover:bg-gray-50 dark:hover:bg-transparent dark:hover:text-white hover:text-mm-textDark transition-all duration-300 text-sm dark:text-xs font-bold dark:font-mono tracking-wider w-full text-left dark:border-l-[3px] dark:border-transparent">
-            <HelpCircle size={isDarkMode ? 18 : 20} />
+          <button 
+            onClick={() => setActiveTab('support')}
+            className={`flex items-center gap-4 px-6 dark:px-8 py-4 rounded-[20px] dark:rounded-none text-sm dark:text-xs font-bold dark:font-mono tracking-wider w-full text-left transition-all duration-300 
+              ${activeTab === 'support' 
+                ? 'bg-mm-yellow dark:bg-mm-yellow/5 text-mm-textDark dark:text-mm-yellow shadow-md dark:shadow-[inset_20px_0_20px_-20px_rgba(255,197,0,0.2)] scale-[1.02] dark:scale-100 dark:border-l-[3px] dark:border-mm-yellow' 
+                : 'text-mm-textMuted dark:text-mm-dark-textMuted hover:bg-gray-50 dark:hover:bg-transparent dark:hover:text-white hover:text-mm-textDark dark:border-l-[3px] dark:border-transparent'}`}
+          >
+            <HelpCircle size={isDarkMode ? 18 : 20} className="transition-transform duration-300" />
             SUPPORT
           </button>
           <button onClick={onLogout} className="flex items-center gap-4 px-6 dark:px-8 py-4 rounded-[20px] dark:rounded-none text-mm-textMuted dark:text-mm-dark-textMuted hover:bg-gray-50 dark:hover:bg-transparent dark:hover:text-white hover:text-mm-textDark transition-all duration-300 text-sm dark:text-xs font-bold dark:font-mono tracking-wider w-full text-left dark:border-l-[3px] dark:border-transparent">
@@ -200,6 +207,7 @@ export default function Dashboard({ onLogout }) {
           {activeTab === 'alerts' && <AlertsView />}
           {activeTab === 'inspect' && <InspectView />}
           {activeTab === 'settings' && <SettingsView />}
+          {activeTab === 'support' && <SupportView />}
         </div>
       </div>
     </div>
