@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { flushSync } from 'react-dom';
 import { 
   Target, 
   Share2, 
@@ -29,9 +30,13 @@ export default function Dashboard({ onLogout }) {
   const { isDarkMode, toggleTheme } = useTheme();
   
   const handleThemeToggle = async (e) => {
+    // Disable CSS transitions temporarily to prevent them from fading underneath the wave
+    document.documentElement.classList.add('disable-transitions');
+
     // Fallback for browsers that don't support view transitions
     if (!document.startViewTransition) {
       toggleTheme();
+      document.documentElement.classList.remove('disable-transitions');
       return;
     }
 
@@ -47,7 +52,9 @@ export default function Dashboard({ onLogout }) {
 
     // Start transition
     const transition = document.startViewTransition(() => {
-      toggleTheme();
+      flushSync(() => {
+        toggleTheme();
+      });
     });
 
     // Wait for the pseudo-elements to be created
@@ -65,6 +72,11 @@ export default function Dashboard({ onLogout }) {
           pseudoElement: "::view-transition-new(root)",
         }
       );
+    });
+
+    // Re-enable CSS transitions after the wave is finished
+    transition.finished.finally(() => {
+      document.documentElement.classList.remove('disable-transitions');
     });
   };
 

@@ -66,3 +66,8 @@
 .dark::view-transition-old(root) {
   z-index: 1;
 }
+
+/* Prevent CSS transitions from ruining View Transition snapshots */
+.disable-transitions * {
+  transition: none !important;
+}
