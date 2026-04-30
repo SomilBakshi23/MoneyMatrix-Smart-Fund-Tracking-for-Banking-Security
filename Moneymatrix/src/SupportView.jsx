@@ -16,11 +16,11 @@ export default function SupportView() {
           </h2>
         </div>
         <div className="flex gap-4">
-          <div className="border border-gray-100 dark:border-[#2a2a28] rounded-[24px] dark:rounded-full px-8 py-3 dark:px-6 dark:py-2 flex flex-col items-center justify-center shadow-sm dark:shadow-none bg-white dark:bg-transparent">
+          <div className="border border-gray-100 dark:border-[#2a2a28] rounded-[24px] dark:rounded-full px-8 py-3 dark:px-6 dark:py-2 flex flex-col items-center justify-center shadow-sm dark:shadow-none bg-mm-bg dark:bg-[#1a1a18]">
             <span className="text-[8px] dark:text-[7px] text-mm-textMuted dark:text-[#a3a398] tracking-widest uppercase mb-1 font-bold dark:font-mono">Global Latency</span>
             <span className="text-xl dark:text-lg font-bold text-mm-textDark dark:text-[#FEDB71] leading-none dark:font-mono">14.2ms</span>
           </div>
-          <div className="border border-gray-100 dark:border-[#2a2a28] rounded-[24px] dark:rounded-full px-8 py-3 dark:px-6 dark:py-2 flex flex-col items-center justify-center shadow-sm dark:shadow-none bg-white dark:bg-transparent">
+          <div className="border border-gray-100 dark:border-[#2a2a28] rounded-[24px] dark:rounded-full px-8 py-3 dark:px-6 dark:py-2 flex flex-col items-center justify-center shadow-sm dark:shadow-none bg-mm-bg dark:bg-[#1a1a18]">
             <span className="text-[8px] dark:text-[7px] text-mm-textMuted dark:text-[#a3a398] tracking-widest uppercase mb-1 font-bold dark:font-mono">Node Uptime</span>
             <span className="text-xl dark:text-lg font-bold text-mm-textDark dark:text-[#FEDB71] leading-none dark:font-mono">99.999%</span>
           </div>
@@ -76,25 +76,25 @@ export default function SupportView() {
           
           <div className="grid grid-cols-4 gap-4">
             {/* Card 1 */}
-            <div className="bg-white dark:bg-[#1a1a18] rounded-2xl p-6 border border-gray-100 dark:border-[#2a2a28] hover:border-mm-yellow dark:hover:border-[#FEDB71] transition-colors cursor-pointer group shadow-sm dark:shadow-none">
+            <div className="bg-mm-bg dark:bg-[#1a1a18] rounded-2xl p-6 border border-gray-100 dark:border-[#2a2a28] hover:border-mm-yellow dark:hover:border-[#FEDB71] transition-colors cursor-pointer group shadow-sm dark:shadow-none">
               <FileText size={18} className="text-mm-textDark dark:text-white mb-4 group-hover:text-mm-yellow transition-colors" />
               <h4 className="text-[10px] font-bold text-mm-textDark dark:text-white uppercase tracking-widest mb-3 dark:font-mono">Technical Docs</h4>
               <p className="text-[10px] text-mm-textMuted dark:text-[#a3a398] leading-relaxed dark:font-mono">Deep integration specs for core ledger modules and routing protocols.</p>
             </div>
             {/* Card 2 */}
-            <div className="bg-white dark:bg-[#1a1a18] rounded-2xl p-6 border border-gray-100 dark:border-[#2a2a28] hover:border-mm-yellow dark:hover:border-[#FEDB71] transition-colors cursor-pointer group shadow-sm dark:shadow-none">
+            <div className="bg-mm-bg dark:bg-[#1a1a18] rounded-2xl p-6 border border-gray-100 dark:border-[#2a2a28] hover:border-mm-yellow dark:hover:border-[#FEDB71] transition-colors cursor-pointer group shadow-sm dark:shadow-none">
               <Lock size={18} className="text-mm-textDark dark:text-white mb-4 group-hover:text-mm-yellow transition-colors" />
               <h4 className="text-[10px] font-bold text-mm-textDark dark:text-white uppercase tracking-widest mb-3 dark:font-mono">Security Protocols</h4>
               <p className="text-[10px] text-mm-textMuted dark:text-[#a3a398] leading-relaxed dark:font-mono">Mandatory encryption standards and multi-sig clearance documentation.</p>
             </div>
             {/* Card 3 */}
-            <div className="bg-white dark:bg-[#1a1a18] rounded-2xl p-6 border border-gray-100 dark:border-[#2a2a28] hover:border-mm-yellow dark:hover:border-[#FEDB71] transition-colors cursor-pointer group shadow-sm dark:shadow-none">
+            <div className="bg-mm-bg dark:bg-[#1a1a18] rounded-2xl p-6 border border-gray-100 dark:border-[#2a2a28] hover:border-mm-yellow dark:hover:border-[#FEDB71] transition-colors cursor-pointer group shadow-sm dark:shadow-none">
               <ShieldCheck size={18} className="text-mm-textDark dark:text-white mb-4 group-hover:text-mm-yellow transition-colors" />
               <h4 className="text-[10px] font-bold text-mm-textDark dark:text-white uppercase tracking-widest mb-3 dark:font-mono">Compliance Guides</h4>
               <p className="text-[10px] text-mm-textMuted dark:text-[#a3a398] leading-relaxed dark:font-mono">Global regulatory frameworks and automated reporting standards.</p>
             </div>
             {/* Card 4 */}
-            <div className="bg-white dark:bg-[#1a1a18] rounded-2xl p-6 border border-gray-100 dark:border-[#2a2a28] hover:border-mm-yellow dark:hover:border-[#FEDB71] transition-colors cursor-pointer group shadow-sm dark:shadow-none">
+            <div className="bg-mm-bg dark:bg-[#1a1a18] rounded-2xl p-6 border border-gray-100 dark:border-[#2a2a28] hover:border-mm-yellow dark:hover:border-[#FEDB71] transition-colors cursor-pointer group shadow-sm dark:shadow-none">
               <Code size={18} className="text-mm-textDark dark:text-white mb-4 group-hover:text-mm-yellow transition-colors" />
               <h4 className="text-[10px] font-bold text-mm-textDark dark:text-white uppercase tracking-widest mb-3 dark:font-mono">API Reference</h4>
               <p className="text-[10px] text-mm-textMuted dark:text-[#a3a398] leading-relaxed dark:font-mono">RESTful endpoints, WebSocket streams, and sandbox authentication.</p>
@@ -103,7 +103,7 @@ export default function SupportView() {
         </div>
 
         {/* Direct Admin Link */}
-        <div className="col-span-3 bg-white dark:bg-[#1a1a18] rounded-[28px] dark:rounded-2xl p-8 dark:p-6 border border-gray-100 dark:border-[#2a2a28] shadow-sm dark:shadow-lg flex flex-col justify-between">
+        <div className="col-span-3 bg-mm-bg dark:bg-[#1a1a18] rounded-[28px] dark:rounded-2xl p-8 dark:p-6 border border-gray-100 dark:border-[#2a2a28] shadow-sm dark:shadow-lg flex flex-col justify-between">
           <div>
             <h3 className="text-sm dark:text-[11px] font-bold text-mm-textDark dark:text-white uppercase tracking-widest mb-4 dark:font-mono">
               Direct Admin Link
@@ -125,7 +125,7 @@ export default function SupportView() {
           </div>
 
           <div>
-            <button className="w-full bg-mm-yellow dark:bg-mm-yellow/10 hover:bg-mm-yellowHover dark:hover:bg-mm-yellow/20 border border-transparent dark:border-mm-yellow text-black dark:text-mm-yellow font-bold py-4 rounded-xl text-[10px] tracking-widest uppercase transition-colors shadow-[0_4px_14px_rgba(254,219,113,0.3)] dark:shadow-none dark:font-mono mb-4">
+            <button className="w-full bg-mm-yellow dark:bg-[#FEDB71] hover:bg-mm-yellowHover dark:hover:bg-[#e6b200] text-black font-bold py-4 rounded-xl text-[10px] tracking-widest uppercase transition-colors shadow-[0_4px_14px_rgba(254,219,113,0.3)] dark:shadow-[0_0_15px_rgba(255,197,0,0.2)] dark:font-mono mb-4">
               Emergency Override
             </button>
             <div className="flex items-center justify-between px-2">
