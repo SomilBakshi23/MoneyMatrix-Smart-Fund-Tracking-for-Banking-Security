@@ -92,18 +92,7 @@ export default function Dashboard({ onLogout }) {
               MoneyMatrix
             </h1>
             <div className="text-[10px] dark:text-[9px] text-mm-textMuted dark:text-mm-dark-textSubtle uppercase font-bold tracking-wider dark:tracking-[0.2em] dark:font-mono">
-              <AnimatePresence mode="wait">
-                <motion.span
-                  key={isDarkMode ? 'dark' : 'light'}
-                  initial={{ opacity: 0, y: 5 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -5 }}
-                  transition={{ duration: 0.3 }}
-                  className="block"
-                >
-                  {isDarkMode ? 'Signal Black Terminal' : 'Premium Portal'}
-                </motion.span>
-              </AnimatePresence>
+              Premium Portal
             </div>
           </div>
 
