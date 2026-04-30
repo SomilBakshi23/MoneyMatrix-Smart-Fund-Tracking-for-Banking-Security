@@ -28,52 +28,48 @@ export default function Dashboard({ onLogout }) {
   const [activeTab, setActiveTab] = useState('monitor');
   const { isDarkMode, toggleTheme } = useTheme();
   
-  // Theme Expansion Overlay States
-  const [isExpanding, setIsExpanding] = useState(false);
-  const [overlayPos, setOverlayPos] = useState({ x: window.innerWidth - 60, y: 60 });
-  const [targetThemeIsDark, setTargetThemeIsDark] = useState(false);
-
-  const handleThemeToggle = (e) => {
-    const nextTheme = !isDarkMode;
-
-    // Get click coordinates for the origin of the wave
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = rect.left + rect.width / 2;
-    const y = rect.top + rect.height / 2;
-
-    // 1. Prepare overlay
-    setOverlayPos({ x, y });
-    setTargetThemeIsDark(nextTheme);
-    
-    // 2. Start expansion wave
-    setIsExpanding(true);
-
-    // 3. Once the wave covers the screen (400ms), switch the actual underlying UI
-    setTimeout(() => {
+  const handleThemeToggle = async (e) => {
+    // Fallback for browsers that don't support view transitions
+    if (!document.startViewTransition) {
       toggleTheme();
-    }, 400);
+      return;
+    }
 
-    // 4. Shrink/reset the overlay after the UI has updated (800ms)
-    // Since the underlying UI now matches the overlay's color, shrinking it is invisible.
-    setTimeout(() => {
-      setIsExpanding(false);
-    }, 800);
+    // Get click position
+    const x = e.clientX;
+    const y = e.clientY;
+    
+    // Calculate distance to the furthest corner
+    const endRadius = Math.hypot(
+      Math.max(x, innerWidth - x),
+      Math.max(y, innerHeight - y)
+    );
+
+    // Start transition
+    const transition = document.startViewTransition(() => {
+      toggleTheme();
+    });
+
+    // Wait for the pseudo-elements to be created
+    transition.ready.then(() => {
+      const clipPath = [
+        `circle(0px at ${x}px ${y}px)`,
+        `circle(${endRadius}px at ${x}px ${y}px)`
+      ];
+
+      document.documentElement.animate(
+        { clipPath: clipPath },
+        {
+          duration: 600,
+          easing: "ease-in-out",
+          pseudoElement: "::view-transition-new(root)",
+        }
+      );
+    });
   };
 
   return (
-    <div className={`h-screen w-full font-sans flex overflow-hidden p-4 dark:p-0 gap-6 dark:gap-0 dark:selection:bg-mm-yellow dark:selection:text-black transition-colors duration-700 ${isDarkMode ? 'bg-[#0d0d0c] text-white' : 'bg-mm-bg text-mm-textDark'}`}>
-      
-      {/* Theme Expansion Overlay (The Wave) */}
-      <motion.div
-        initial={false}
-        animate={{
-          clipPath: isExpanding 
-            ? `circle(3000px at ${overlayPos.x}px ${overlayPos.y}px)` 
-            : `circle(0px at ${overlayPos.x}px ${overlayPos.y}px)`,
-          transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] }
-        }}
-        className={`fixed inset-0 z-[9999] pointer-events-none ${targetThemeIsDark ? 'bg-[#0d0d0c]' : 'bg-[#FCFAF8]'}`}
-      />
+    <div className={`h-screen w-full font-sans flex overflow-hidden p-4 dark:p-0 gap-6 dark:gap-0 dark:selection:bg-mm-yellow dark:selection:text-black ${isDarkMode ? 'bg-[#0d0d0c] text-white' : 'bg-mm-bg text-mm-textDark'}`}>
 
       {/* Sidebar */}
       <aside className={`w-72 dark:w-64 rounded-[28px] dark:rounded-none shadow-premium dark:shadow-none dark:border-r dark:border-[#1f1f1a] flex flex-col justify-between shrink-0 h-full relative z-20 py-8 px-6 dark:p-8 dark:pb-6 transition-colors duration-700 ${isDarkMode ? 'bg-[#0a0a0a]' : 'bg-mm-card'}`}>
