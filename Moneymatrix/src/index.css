@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
+
 @layer base {
   body {
     @apply bg-mm-bg text-mm-textDark font-sans transition-colors duration-300;
@@ -23,6 +24,18 @@
 .custom-scrollbar::-webkit-scrollbar-thumb {
   background-color: rgba(20,15,31,0.1);
   border-radius: 20px;
+=======
+:root {
+  color-scheme: dark;
+}
+
+body {
+  margin: 0;
+  background-color: #161613;
+  color: #ffffff;
+  font-family: 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
