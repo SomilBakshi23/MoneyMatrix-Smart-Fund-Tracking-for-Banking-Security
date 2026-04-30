@@ -40,4 +40,29 @@
   background-color: #4a4a42;
 }
 
+/* View Transitions for Theme Toggle */
+::view-transition-group(root) {
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
 
+::view-transition-new(root),
+::view-transition-old(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+/* When going to dark mode, the new dark page expands over the light page */
+::view-transition-new(root) {
+  z-index: 9999;
+}
+::view-transition-old(root) {
+  z-index: 1;
+}
+
+/* When going to light mode, the new light page expands over the dark page */
+.dark::view-transition-new(root) {
+  z-index: 9999;
+}
+.dark::view-transition-old(root) {
+  z-index: 1;
+}
