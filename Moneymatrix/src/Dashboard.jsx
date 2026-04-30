@@ -22,24 +22,16 @@ import AlertsView from './AlertsView';
 import InspectView from './InspectView';
 import MonitorView from './MonitorView';
 import SettingsView from './SettingsView';
+import { useTheme } from './ThemeContext';
 
 export default function Dashboard({ onLogout }) {
   const [activeTab, setActiveTab] = useState('monitor');
-  const [isDarkMode, setIsDarkMode] = useState(true);
+  const { isDarkMode, toggleTheme } = useTheme();
   
   // Theme Expansion Overlay States
   const [isExpanding, setIsExpanding] = useState(false);
   const [overlayPos, setOverlayPos] = useState({ x: window.innerWidth - 60, y: 60 });
   const [targetThemeIsDark, setTargetThemeIsDark] = useState(false);
-
-  // Apply dark mode class to HTML element
-  useEffect(() => {
-    if (isDarkMode) {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-  }, [isDarkMode]);
 
   const handleThemeToggle = (e) => {
     const nextTheme = !isDarkMode;
@@ -58,7 +50,7 @@ export default function Dashboard({ onLogout }) {
 
     // 3. Once the wave covers the screen (400ms), switch the actual underlying UI
     setTimeout(() => {
-      setIsDarkMode(nextTheme);
+      toggleTheme();
     }, 400);
 
     // 4. Shrink/reset the overlay after the UI has updated (800ms)
