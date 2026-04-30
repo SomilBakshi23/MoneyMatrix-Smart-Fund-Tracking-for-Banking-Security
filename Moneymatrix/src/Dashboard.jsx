@@ -25,7 +25,7 @@ import SettingsView from './SettingsView';
 
 export default function Dashboard({ onLogout }) {
   const [activeTab, setActiveTab] = useState('monitor');
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(true);
   
   // Theme Expansion Overlay States
   const [isExpanding, setIsExpanding] = useState(false);
