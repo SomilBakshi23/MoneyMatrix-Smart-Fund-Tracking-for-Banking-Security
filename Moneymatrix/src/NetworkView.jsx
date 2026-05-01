@@ -1,8 +1,65 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Target, Search, Filter, Shield, Activity, Maximize2, Zap, AlertTriangle, ChevronRight } from 'lucide-react';
+import ForceGraph2D from "react-force-graph-2d";
+import { getGraphData } from "./services/api";
+import { connectSocket } from "./services/socket";
 
 export default function NetworkView() {
   const [zoom, setZoom] = useState(1);
+  const [graphData, setGraphData] = useState({ nodes: [], links: [] });
+
+  useEffect(() => {
+    const fetchGraph = async () => {
+      try {
+        const res = await getGraphData("A1");
+        const nodes = [];
+        const links = [];
+
+        res.data.forEach(item => {
+          nodes.push({ id: item.source });
+          nodes.push({ id: item.target });
+
+          links.push({
+            source: item.source,
+            target: item.target,
+            amount: item.amount
+          });
+        });
+
+        setGraphData({
+          nodes: [...new Map(nodes.map(n => [n.id, n])).values()],
+          links
+        });
+      } catch (err) {
+        console.error("Failed to fetch graph data", err);
+      }
+    };
+    fetchGraph();
+
+    const unsubscribe = connectSocket((message) => {
+      if (message.type === "NEW_TRANSACTION") {
+        setGraphData(prev => {
+          const newNodes = [...prev.nodes];
+          const hasSender = newNodes.find(n => n.id === message.data.sender_id);
+          const hasReceiver = newNodes.find(n => n.id === message.data.receiver_id);
+          
+          if (!hasSender) newNodes.push({ id: message.data.sender_id });
+          if (!hasReceiver) newNodes.push({ id: message.data.receiver_id });
+
+          return {
+            nodes: newNodes,
+            links: [...prev.links, {
+              source: message.data.sender_id,
+              target: message.data.receiver_id,
+              amount: message.data.amount
+            }]
+          };
+        });
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   return (
     <div className="flex-1 flex gap-8 dark:gap-0 bg-mm-card dark:bg-[#0a0a0a] rounded-[28px] dark:rounded-none shadow-premium dark:shadow-none overflow-hidden p-8 dark:p-0 relative font-sans transition-all duration-300">
@@ -33,59 +90,14 @@ export default function NetworkView() {
           </div>
         </div>
 
-        {/* The SVG Map Background */}
-        <div className="absolute inset-0 flex items-center justify-center" style={{ transform: `scale(${zoom})`, transition: 'transform 0.5s ease-out' }}>
-          
-          {/* Soft Grid Lines Light Mode */}
-          <div className="absolute inset-0 dark:hidden" style={{
-            backgroundImage: 'linear-gradient(rgba(20,15,31,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(20,15,31,0.03) 1px, transparent 1px)',
-            backgroundSize: '40px 40px'
-          }}></div>
-
-          {/* Cyber Grid Lines Dark Mode */}
-          <div className="absolute inset-0 hidden dark:block" style={{
-            backgroundImage: 'linear-gradient(#1a1a18 1px, transparent 1px), linear-gradient(90deg, #1a1a18 1px, transparent 1px)',
-            backgroundSize: '50px 50px',
-            opacity: 0.5
-          }}></div>
-
-          {/* Light Mode SVG */}
-          <svg className="w-[80%] h-[80%] opacity-40 dark:hidden" viewBox="0 0 800 400">
-            <path d="M 200,100 L 400,200 L 600,150 L 500,300 L 300,250 Z" fill="none" stroke="#140F1F" strokeWidth="1" />
-            <path d="M 400,200 L 500,100 M 600,150 L 700,250 M 300,250 L 150,300 M 200,100 L 100,50" fill="none" stroke="#140F1F" strokeWidth="0.5" strokeDasharray="4 4" />
-            <path d="M 150,300 C 250,250 350,250 400,200 C 450,150 550,150 600,150" fill="none" stroke="#FEDB71" strokeWidth="4" strokeLinecap="round" strokeDasharray="15 15" className="animate-[dash_20s_linear_infinite]" />
-          </svg>
-
-          {/* Dark Mode SVG */}
-          <svg className="w-full h-full opacity-60 hidden dark:block" viewBox="0 0 800 400">
-            <path d="M 100,200 L 300,100 L 500,300 L 700,150" fill="none" stroke="#33332d" strokeWidth="1" />
-            <path d="M 200,300 L 400,200 L 600,250" fill="none" stroke="#33332d" strokeWidth="1" />
-            <path d="M 300,100 L 400,200 L 500,300" fill="none" stroke="#ffc500" strokeWidth="2" className="opacity-50" />
-            
-            <path d="M 100,200 Q 200,150 300,100 T 500,300 T 700,150" fill="none" stroke="#ffc500" strokeWidth="1.5" strokeDasharray="4 4" className="animate-[dash_10s_linear_infinite]" />
-            <path d="M 200,300 Q 300,250 400,200 T 600,250" fill="none" stroke="#ff0000" strokeWidth="1.5" strokeDasharray="4 4" className="animate-[dash_8s_linear_infinite_reverse]" />
-            
-            <circle cx="300" cy="100" r="40" fill="none" stroke="#ffc500" strokeWidth="0.5" className="opacity-30 animate-pulse" />
-            <circle cx="500" cy="300" r="60" fill="none" stroke="#ff0000" strokeWidth="0.5" className="opacity-20 animate-pulse" />
-          </svg>
-
-          <style>
-            {`
-              @keyframes dash { to { stroke-dashoffset: -1000; } }
-              .dark .map-nodes div { box-shadow: 0 0 15px currentColor; border: none; }
-            `}
-          </style>
-
-          {/* Map Nodes */}
-          <div className="absolute top-[30%] left-[25%] w-4 h-4 dark:w-3 dark:h-3 bg-white dark:bg-[#ff0000] border-2 border-[#ff4d4d] dark:border-none rounded-full shadow-sm dark:shadow-[0_0_15px_#ff0000] cursor-pointer hover:scale-150 dark:hover:scale-100 transition-transform"></div>
-          
-          <div className="absolute top-[50%] left-[50%] w-6 h-6 dark:w-8 dark:h-8 bg-white dark:bg-[#ffc500]/20 border-[3px] border-mm-yellow dark:border-mm-yellow rounded-full shadow-premium dark:shadow-[0_0_30px_rgba(255,197,0,0.5)] flex items-center justify-center cursor-pointer hover:scale-125 dark:hover:scale-100 transition-transform z-10">
-            <div className="w-2 h-2 dark:w-3 dark:h-3 bg-mm-yellow dark:bg-white rounded-full animate-ping dark:shadow-[0_0_10px_white]"></div>
-          </div>
-          
-          <div className="absolute top-[37.5%] left-[75%] w-4 h-4 dark:w-3 dark:h-3 bg-white dark:bg-[#33332d] border-2 border-gray-300 dark:border-none rounded-full shadow-sm dark:shadow-none cursor-pointer hover:scale-150 dark:hover:scale-100 transition-transform"></div>
-          <div className="absolute top-[75%] left-[62.5%] w-3 h-3 dark:w-2 dark:h-2 bg-white dark:bg-mm-yellow border-2 border-mm-yellow dark:border-none rounded-full shadow-sm dark:shadow-[0_0_10px_#ffc500] cursor-pointer hover:scale-150 dark:hover:scale-100 transition-transform"></div>
-          <div className="absolute top-[62.5%] left-[37.5%] w-3 h-3 dark:w-2 dark:h-2 bg-white dark:bg-[#ff0000] border-2 border-[#ff4d4d] dark:border-none rounded-full shadow-sm dark:shadow-[0_0_10px_#ff0000] cursor-pointer hover:scale-150 dark:hover:scale-100 transition-transform"></div>
+        {/* The Graph */}
+        <div className="absolute inset-0 flex items-center justify-center bg-black" style={{ transform: `scale(${zoom})`, transition: 'transform 0.5s ease-out' }}>
+          <ForceGraph2D
+            graphData={graphData}
+            nodeLabel="id"
+            linkLabel={(link) => `$${link.amount}`}
+            nodeAutoColorBy="id"
+          />
         </div>
 
         {/* Bottom Left Legend */}

@@ -25,10 +25,36 @@ import MonitorView from './MonitorView';
 import SettingsView from './SettingsView';
 import SupportView from './SupportView';
 import { useTheme } from './ThemeContext';
+import { getTransactions } from './services/api';
+import { connectSocket } from './services/socket';
 
 export default function Dashboard({ onLogout }) {
   const [activeTab, setActiveTab] = useState('monitor');
+  const [transactions, setTransactions] = useState([]);
   const { isDarkMode, toggleTheme } = useTheme();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await getTransactions();
+        setTransactions(res.data);
+      } catch (err) {
+        if (err.response?.status === 401) {
+          localStorage.removeItem("token");
+          window.location.href = "/";
+        }
+      }
+    };
+    fetchData();
+
+    const unsubscribe = connectSocket((message) => {
+      if (message.type === "NEW_TRANSACTION") {
+        setTransactions(prev => [message.data, ...prev]);
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
   
   const handleThemeToggle = async (e) => {
     // Disable CSS transitions temporarily to prevent them from fading underneath the wave
@@ -202,9 +228,9 @@ export default function Dashboard({ onLogout }) {
 
         {/* Dynamic Content Views */}
         <div className="flex-1 flex flex-col overflow-hidden relative">
-          {activeTab === 'monitor' && <MonitorView />}
+          {activeTab === 'monitor' && <MonitorView transactions={transactions} />}
           {activeTab === 'network' && <NetworkView />}
-          {activeTab === 'alerts' && <AlertsView />}
+          {activeTab === 'alerts' && <AlertsView transactions={transactions} />}
           {activeTab === 'inspect' && <InspectView />}
           {activeTab === 'settings' && <SettingsView />}
           {activeTab === 'support' && <SupportView />}

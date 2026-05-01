@@ -1,5 +1,6 @@
 import uuid
 import logging
+import datetime
 from fastapi import APIRouter, Depends, HTTPException, Request
 from sqlalchemy.orm import Session
 from pydantic import BaseModel
@@ -7,6 +8,7 @@ from app.db.postgres import Transaction, Account
 from app.db.neo4j_client import neo4j_client
 from app.ml.fraud_model import predict_fraud
 from app.services.dependencies import get_db, get_current_user
+from app.ws import manager
 
 # Setup Rate Limiter & Logger
 from slowapi import Limiter
@@ -26,7 +28,7 @@ class TxRequest(BaseModel):
 
 @router.post("/")
 @limiter.limit("10/minute") # Protect from spam
-def create_transaction(request: Request, tx: TxRequest, db: Session = Depends(get_db), current_user=Depends(get_current_user)):
+async def create_transaction(request: Request, tx: TxRequest, db: Session = Depends(get_db), current_user=Depends(get_current_user)):
     
     # 1. ACCOUNT VALIDATION
     sender = db.query(Account).filter(Account.id == tx.sender_id).first()
@@ -59,8 +61,23 @@ def create_transaction(request: Request, tx: TxRequest, db: Session = Depends(ge
 
     # 4. UPDATE NEO4J
     neo4j_client.create_transfer(tx.sender_id, tx.receiver_id, tx.amount, tx_id)
+    
+    db.refresh(new_tx)
 
-    # 5. AUDIT LOGGING
+    # 5. WEBSOCKET BROADCAST
+    await manager.broadcast({
+        "type": "NEW_TRANSACTION",
+        "data": {
+            "id": tx_id,
+            "sender_id": tx.sender_id,
+            "receiver_id": tx.receiver_id,
+            "amount": tx.amount,
+            "is_fraud": is_fraud_final,
+            "timestamp": new_tx.timestamp.isoformat() if new_tx.timestamp else datetime.datetime.utcnow().isoformat()
+        }
+    })
+
+    # 6. AUDIT LOGGING
     if is_fraud_final:
         logger.warning(f"🚨 FRAUD ALERT: Tx {tx_id} flagged. Sender: {tx.sender_id}, Amount: ${tx.amount}")
     else:

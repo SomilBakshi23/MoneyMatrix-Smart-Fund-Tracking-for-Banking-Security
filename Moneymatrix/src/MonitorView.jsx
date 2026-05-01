@@ -1,7 +1,16 @@
 import React from 'react';
-import { Shield, Zap, Users, Search, ZoomIn, ZoomOut, List } from 'lucide-react';
+import { Shield, Zap, Users, Search, ZoomIn, ZoomOut, List, Plus } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { createTransaction } from './services/api';
 
-export default function MonitorView() {
+export default function MonitorView({ transactions = [] }) {
+  const handleTestTransaction = async () => {
+    try {
+      await createTransaction({ sender_id: "A1", receiver_id: "A2", amount: Math.floor(Math.random() * 1000) });
+    } catch(err) {
+      console.error(err);
+    }
+  };
   return (
     <div className="flex-1 flex flex-col bg-mm-card dark:bg-[#11110f] rounded-[28px] dark:rounded-none shadow-premium dark:shadow-none overflow-y-auto p-10 dark:p-8 relative font-sans transition-all duration-300">
       
@@ -95,40 +104,42 @@ export default function MonitorView() {
         <div className="col-span-4 bg-mm-bg dark:bg-[#1a1a18] rounded-[28px] dark:rounded-xl border border-gray-100 dark:border-[#2a2a28] shadow-sm dark:shadow-xl flex flex-col hover:shadow-premium dark:hover:shadow-xl transition-shadow duration-300">
           <div className="p-6 border-b border-gray-100 dark:border-[#2a2a28] flex justify-between items-center bg-white dark:bg-transparent rounded-t-[28px] dark:rounded-none transition-colors">
             <h3 className="text-lg font-bold text-mm-textDark dark:text-white dark:font-mono">Threat Stream</h3>
-            <div className="w-8 h-8 dark:w-auto dark:h-auto rounded-full bg-gray-50 dark:bg-transparent flex items-center justify-center">
-              <List size={16} className="text-mm-textDark dark:text-mm-yellow" />
+            <div className="flex gap-2">
+              <button onClick={handleTestTransaction} className="w-8 h-8 rounded-full bg-mm-yellow/20 hover:bg-mm-yellow flex items-center justify-center transition-colors">
+                <Plus size={16} className="text-mm-textDark dark:text-mm-yellow hover:text-black" />
+              </button>
+              <div className="w-8 h-8 dark:w-auto dark:h-auto rounded-full bg-gray-50 dark:bg-transparent flex items-center justify-center">
+                <List size={16} className="text-mm-textDark dark:text-mm-yellow" />
+              </div>
             </div>
           </div>
 
           <div className="flex-1 overflow-y-auto p-4 space-y-4 dark:space-y-3 custom-scrollbar">
-            
-            <div className="bg-white dark:bg-[#11110f] border border-gray-100 dark:border-[#2a2a28] rounded-2xl dark:rounded-lg p-5 dark:p-4 hover:-translate-y-1 dark:hover:translate-y-0 hover:shadow-md dark:hover:shadow-none dark:hover:border-[#ff8080]/50 transition-all duration-300 cursor-pointer group">
-              <div className="flex justify-between items-center mb-3 dark:mb-2">
-                <span className="text-[10px] dark:text-[9px] font-bold text-[#ff4d4d] dark:text-[#f97316] bg-[#ffebf0] dark:bg-transparent px-3 dark:px-0 py-1 dark:py-0 rounded-full dark:rounded-none tracking-wider uppercase dark:font-mono">High Risk</span>
-                <span className="text-[10px] dark:text-[9px] text-mm-textMuted dark:text-mm-dark-textSubtle font-medium dark:font-mono">2m ago</span>
-              </div>
-              <div className="font-bold text-sm text-mm-textDark dark:text-white mb-1 dark:font-mono">Large Transfer Detected</div>
-              <div className="text-xs dark:text-[9px] text-mm-textMuted dark:text-mm-dark-textMuted dark:font-mono">Origin: LU-002 • $45,000.00</div>
-            </div>
-
-            <div className="bg-white dark:bg-[#11110f] border border-gray-100 dark:border-[#2a2a28] rounded-2xl dark:rounded-lg p-5 dark:p-4 hover:-translate-y-1 dark:hover:translate-y-0 hover:shadow-md dark:hover:shadow-none dark:hover:border-mm-dark-textSubtle transition-all duration-300 cursor-pointer group">
-              <div className="flex justify-between items-center mb-3 dark:mb-2">
-                <span className="text-[10px] dark:text-[9px] font-bold text-mm-textDark dark:text-mm-dark-textSubtle bg-gray-100 dark:bg-transparent px-3 dark:px-0 py-1 dark:py-0 rounded-full dark:rounded-none tracking-wider uppercase dark:font-mono">Anomaly</span>
-                <span className="text-[10px] dark:text-[9px] text-mm-textMuted dark:text-mm-dark-textSubtle font-medium dark:font-mono">5m ago</span>
-              </div>
-              <div className="font-bold text-sm text-mm-textDark dark:text-white mb-1 dark:font-mono">Dormant Account Activity</div>
-              <div className="text-xs dark:text-[9px] text-mm-textMuted dark:text-mm-dark-textMuted dark:font-mono">ID: #4920 • Last active: 2021</div>
-            </div>
-
-            <div className="bg-white dark:bg-[#11110f] border border-gray-100 dark:border-[#2a2a28] rounded-2xl dark:rounded-lg p-5 dark:p-4 hover:-translate-y-1 dark:hover:translate-y-0 hover:shadow-md dark:hover:shadow-none dark:hover:border-[#ff8080]/50 transition-all duration-300 cursor-pointer group">
-              <div className="flex justify-between items-center mb-3 dark:mb-2">
-                <span className="text-[10px] dark:text-[9px] font-bold text-[#ff4d4d] dark:text-[#f97316] bg-[#ffebf0] dark:bg-transparent px-3 dark:px-0 py-1 dark:py-0 rounded-full dark:rounded-none tracking-wider uppercase dark:font-mono">High Risk</span>
-                <span className="text-[10px] dark:text-[9px] text-mm-textMuted dark:text-mm-dark-textSubtle font-medium dark:font-mono">8m ago</span>
-              </div>
-              <div className="font-bold text-sm text-mm-textDark dark:text-white mb-1 dark:font-mono">Velocity Limit Triggered</div>
-              <div className="text-xs dark:text-[9px] text-mm-textMuted dark:text-mm-dark-textMuted dark:font-mono">Entity: CC-Global • Burst: 450 trx/sec</div>
-            </div>
-
+            <AnimatePresence initial={false}>
+            {transactions.slice().reverse().slice(0, 10).map((tx, idx) => (
+              <motion.div 
+                key={tx.id || idx}
+                initial={{ opacity: 0, y: -20, scale: 0.95 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                className={`bg-white dark:bg-[#11110f] border rounded-2xl dark:rounded-lg p-5 dark:p-4 hover:-translate-y-1 dark:hover:translate-y-0 hover:shadow-md dark:hover:shadow-none transition-all duration-300 cursor-pointer group ${tx.is_fraud === 1 ? 'border-[#ffebf0] dark:border-[#330000] hover:border-[#ff4d4d]/50' : 'border-gray-100 dark:border-[#2a2a28] hover:border-mm-dark-textSubtle'}`}
+              >
+                <div className="flex justify-between items-center mb-3 dark:mb-2">
+                  <span className={`text-[10px] dark:text-[9px] font-bold px-3 dark:px-0 py-1 dark:py-0 rounded-full dark:rounded-none tracking-wider uppercase dark:font-mono ${tx.is_fraud === 1 ? 'text-[#ff4d4d] dark:text-[#f97316] bg-[#ffebf0] dark:bg-transparent' : 'text-mm-textDark dark:text-mm-dark-textSubtle bg-gray-100 dark:bg-transparent'}`}>
+                    {tx.is_fraud === 1 ? 'High Risk' : 'Transfer'}
+                  </span>
+                  <span className="text-[10px] dark:text-[9px] text-mm-textMuted dark:text-mm-dark-textSubtle font-medium dark:font-mono">
+                    {tx.timestamp ? new Date(tx.timestamp).toLocaleTimeString() : 'Just now'}
+                  </span>
+                </div>
+                <div className="font-bold text-sm text-mm-textDark dark:text-white mb-1 dark:font-mono">
+                  {tx.is_fraud === 1 ? 'Suspicious Transfer' : 'Standard Ingress'}
+                </div>
+                <div className="text-xs dark:text-[9px] text-mm-textMuted dark:text-mm-dark-textMuted dark:font-mono">
+                  {tx.sender_id} → {tx.receiver_id} • ${tx.amount}
+                </div>
+              </motion.div>
+            ))}
+            </AnimatePresence>
           </div>
         </div>
       </div>

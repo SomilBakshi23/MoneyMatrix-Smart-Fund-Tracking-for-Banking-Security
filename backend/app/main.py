@@ -1,5 +1,5 @@
 import logging
-from fastapi import FastAPI
+from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 from slowapi import Limiter, _rate_limit_exceeded_handler
 from slowapi.util import get_remote_address
@@ -35,6 +35,17 @@ app.include_router(auth.router, prefix="/auth", tags=["Authentication"])
 app.include_router(transactions.router, prefix="/transactions", tags=["Transactions"])
 app.include_router(graph.router, prefix="/graph", tags=["Graph"])
 app.include_router(fraud.router, prefix="/fraud", tags=["Fraud"])
+
+from app.ws import manager
+
+@app.websocket("/ws/transactions")
+async def websocket_endpoint(websocket: WebSocket):
+    await manager.connect(websocket)
+    try:
+        while True:
+            await websocket.receive_text()
+    except WebSocketDisconnect:
+        manager.disconnect(websocket)
 
 @app.get("/")
 def health_check():

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { ArrowRight, Lock, KeyRound, ShieldAlert, ShieldCheck, Hexagon, Shield, Globe } from 'lucide-react';
 import Dashboard from './Dashboard';
 import { ThemeProvider } from './ThemeContext';
+import { loginUser } from './services/api';
 
 function LoginScreen({ onLogin }) {
   const [employeeId, setEmployeeId] = useState('');
@@ -9,13 +10,18 @@ function LoginScreen({ onLogin }) {
   const [isAuthenticating, setIsAuthenticating] = useState(false);
   const [mfaEnabled, setMfaEnabled] = useState(true);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (employeeId && authCode) {
       setIsAuthenticating(true);
-      setTimeout(() => {
+      try {
+        const res = await loginUser({ username: employeeId, password: authCode });
+        localStorage.setItem("token", res.data.access_token);
         onLogin();
-      }, 1500);
+      } catch (err) {
+        console.error("Login failed", err);
+        setIsAuthenticating(false);
+      }
     }
   };
 
@@ -201,12 +207,15 @@ function LoginScreen({ onLogin }) {
 }
 
 export default function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem("token"));
 
   return (
     <ThemeProvider>
       {isAuthenticated ? (
-        <Dashboard onLogout={() => setIsAuthenticated(false)} />
+        <Dashboard onLogout={() => {
+          localStorage.removeItem("token");
+          setIsAuthenticated(false);
+        }} />
       ) : (
         <LoginScreen onLogin={() => setIsAuthenticated(true)} />
       )}
